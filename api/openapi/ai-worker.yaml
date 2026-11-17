@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: NationRealm AI Worker Internal API
+  version: 0.1.0
+  description: 插件与 AI 工作器之间的内部接口。仅用于服务间通信，不暴露公网。
+servers:
+  - url: http://127.0.0.1:9101
+paths:
+  /v1/intent:
+    post:
+      summary: 请求 NPC 意图
+      description: 请求只携带最小上下文；密钥通过环境变量注入，不在此传输。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [npc_id, request_id, context]
+              properties:
+                npc_id: { type: integer, format: int64 }
+                request_id: { type: string }
+                context:
+                  type: object
+                  description: 最小上下文（摘要记忆 + 当前状态），不含敏感信息/密钥。
+      responses:
+        '200':
+          description: 受约束意图 JSON
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  action: { type: string, enum: [MOVE, GATHER, BUILD, EAT, REST, DEFEND, IDLE] }
+                  reason: { type: string }
+                  target_chunk:
+                    type: array
+                    items: { type: integer }
+                    maxItems: 2
+                  priority: { type: integer, minimum: 0, maximum: 10 }
+        '429': { description: 预算或速率限制，NPC 回落确定性行为 }
+        '503': { description: AI 不可用（超时/熔断），NPC 回落确定性行为 }
+  /health:
+    get:
+      summary: 健康检查
+      responses:
+        '200': { description: ok }
