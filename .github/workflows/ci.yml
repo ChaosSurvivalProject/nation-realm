@@ -20,7 +20,7 @@ jobs:
           distribution: temurin
           java-version: '21'
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
       - name: Format check + compile + test + build
         run: ./gradlew spotlessCheck check build --no-daemon
       - name: Upload test reports
