@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "nationrealm",
+  "version": "0.1.0",
+  "name": "NationRealm Map",
+  "description": "客户端侧高精度国家地图与治理界面；所有国家操作由服务端权威验证。",
+  "authors": ["ChaosSurvivalProject"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.chaos.nation.client.NationRealmClient"]
+  },
+  "depends": {
+    "minecraft": ">=1.21.1",
+    "java": ">=21",
+    "fabricloader": ">=0.16"
+  }
+}
