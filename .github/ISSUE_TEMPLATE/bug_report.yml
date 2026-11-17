@@ -1,0 +1,26 @@
+name: Bug 报告
+description: 报告可复现的问题
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 问题描述
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 版本、命令、期望与实际行为
+    validations: { required: true }
+  - type: input
+    id: versions
+    attributes:
+      label: 版本
+      placeholder: "Purpur 1.21.1 / Java 21 / 插件 0.1.0"
+    validations: { required: true }
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志（请脱敏，勿含密钥）

@@ -1,0 +1,34 @@
+[versions]
+java = "21"
+gradle = "8.10.2"
+junit = "5.11.4"
+mockito = "5.14.2"
+assertj = "3.26.3"
+purpur = "1.21.1-R0.1-SNAPSHOT"
+fabric-loader = "0.16.9"
+minecraft = "1.21.1"
+yarn = "1.21.1+build.3"
+fabric-api = "0.114.0+1.21.1"
+loom = "1.10-SNAPSHOT"
+jackson = "2.18.2"
+testcontainers = "1.20.4"
+spotless = "7.0.2"
+
+[libraries]
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+purpur-api = { module = "org.purpurmc.purpur:purpur-api", version.ref = "purpur" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-dataclass = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
+
+[bundles]
+test = ["junit-api", "junit-engine", "junit-params", "mockito-core", "assertj-core"]
+
+[plugins]
+java-library = { id = "java-library" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

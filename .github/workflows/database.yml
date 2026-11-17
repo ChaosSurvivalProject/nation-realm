@@ -1,0 +1,36 @@
+name: Database Integration
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  migration-test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test_root_pw
+          MYSQL_DATABASE: nation_realm_test
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Apply migrations and run integration tests
+        env:
+          NATION_DB_HOST: 127.0.0.1
+          NATION_DB_USER: root
+          NATION_DB_PASS: test_root_pw
+        run: |
+          mysql -h127.0.0.1 -uroot -ptest_root_pw nation_realm_test < database/mysql/migrations/V1__baseline.sql
+          ./gradlew :nation-core:test --tests '*IntegrationTest' --no-daemon

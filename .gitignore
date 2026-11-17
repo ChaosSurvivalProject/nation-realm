@@ -1,0 +1,33 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# 服务端运行产物（禁止提交任何服务端核心 JAR）
+run/
+*.log
+
+# 密钥与本地配置：绝不提交
+.env
+*.env
+secrets/
+config.local.yml
+NATION_AI_KEY
+nation-ai-key.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Fabric 本地运行
+fabric-client/run/
+fabric-client/.gradle/
