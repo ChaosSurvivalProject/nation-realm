@@ -1,0 +1,27 @@
+name: NationRealm
+main: com.chaos.nation.plugin.NationPlugin
+version: '0.1.0'
+api-version: '1.21'
+folia-supported: false
+load: POSTWORLD
+description: Purpur 国家领土系统（服务端权威，Fabric 客户端可选增强）
+authors: [ChaosSurvivalProject]
+softdepend: [Vault]
+commands:
+  nation:
+    description: 国家系统主命令
+    usage: /nation [sub]
+    permission: nationrealm.use
+permissions:
+  nationrealm.use:
+    description: 使用 /nation
+    default: true
+  nationrealm.admin:
+    description: 管理员权限
+    default: op
+  nationrealm.map:
+    description: 查看地图
+    default: true
+  nationrealm.npc:
+    description: NPC 管理
+    default: op

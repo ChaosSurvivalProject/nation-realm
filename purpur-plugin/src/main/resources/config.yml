@@ -1,0 +1,29 @@
+# 数据库凭据必须通过环境变量注入，禁止写入此文件并提交到仓库。
+database:
+  host: ${NATION_DB_HOST:localhost}
+  port: 3306
+  name: nation_realm
+  user: ${NATION_DB_USER:nation}
+  password: ${NATION_DB_PASS:}
+  pool-max: 16
+  # 同步主线程绝不执行数据库查询；异步队列大小与刷新周期见下。
+  async-batch-size: 512
+  async-flush-ms: 1000
+
+server:
+  # 国家业务首版集中到指定“国家服”；其他服通过消息代理调用。
+  server-id: nation-1
+  nation-server: true
+
+map:
+  refresh-interval-ms: 60000
+  max-packet-bytes: 1048576
+
+npc:
+  max-per-nation: 80   # 服务端硬限制，配置不可超过该值
+  ai-model-key: deepseek-flash-4.1
+  daily-cost-limit-units: 100000
+
+# 启动只警告、不阻断离线玩法。
+ai:
+  base-url: ${NATION_AI_BASE_URL:https://api.deepseek.com/v1/chat/completions}
