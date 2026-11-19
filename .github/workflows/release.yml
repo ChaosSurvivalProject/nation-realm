@@ -28,7 +28,7 @@ jobs:
           cd purpur-plugin/build/libs
           sha256sum nation-realm.jar > SHA256SUMS.txt
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             purpur-plugin/build/libs/nation-realm.jar
