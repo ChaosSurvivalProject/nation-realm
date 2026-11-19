@@ -21,6 +21,7 @@ public enum ErrorCode {
   COOLDOWN_ACTIVE(3004, "冷却中"),
   VERSION_CONFLICT(3005, "版本冲突，请重试"),
   QUOTA_EXCEEDED(3006, "配额已满"),
+  NAME_RESTRICTED(3007, "该名称对应现实中的国家或地区，为符合相关国家的法律法规，不可注册"),
 
   DB_UNAVAILABLE(4001, "数据服务暂不可用"),
   AI_UNAVAILABLE(4002, "AI 服务暂不可用，NPC 使用确定性行为"),

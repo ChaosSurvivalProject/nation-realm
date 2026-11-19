@@ -1,5 +1,6 @@
 package com.chaos.nation.plugin;
 
+import com.chaos.nation.plugin.command.NationCommand;
 import com.chaos.nation.plugin.config.PluginConfig;
 import com.chaos.nation.plugin.service.ExplorationService;
 import java.util.logging.Level;
@@ -23,6 +24,12 @@ public final class NationPlugin extends JavaPlugin {
       return;
     }
     saveConfig();
+
+    // 注册国家主命令（含名称合规校验）。
+    var nationCommand = getCommand("nation");
+    if (nationCommand != null) {
+      nationCommand.setExecutor(new NationCommand());
+    }
 
     exploration =
         new ExplorationService(
