@@ -13,6 +13,7 @@ loom = "1.10-SNAPSHOT"
 jackson = "2.18.2"
 testcontainers = "1.20.4"
 spotless = "7.0.2"
+shadow = "8.1.1"
 
 [libraries]
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
@@ -32,3 +33,4 @@ test = ["junit-api", "junit-engine", "junit-params", "mockito-core", "assertj-co
 [plugins]
 java-library = { id = "java-library" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }

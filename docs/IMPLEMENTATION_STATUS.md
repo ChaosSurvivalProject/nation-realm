@@ -1,6 +1,11 @@
 # 实施状态（诚实报告）
 
-生成日期：2026-11-17。标注规则：只有“已运行且通过”才算完成。
+生成日期：2026-11-17，更新 2026-11-20。标注规则：只有“已运行且通过”才算完成。
+
+## 本次更新（0.2.0）
+- **服务端整合为单一 JAR**：`./gradlew build` 产出 `purpur-plugin/build/libs/nation-realm.jar`（fat JAR，含 purpur-plugin + nation-core + common-protocol + ai-worker + Jackson，1352 个条目，约 2.5MB）。**已运行，BUILD SUCCESSFUL，已核验内含全部模块类。**
+- **国家名称注册合规校验**：`NationNameRegistry` 拦截现实国家/地区名称（中英文，含大小写/空格变体），返回 `NAME_RESTRICTED(3007)` 与“为符合相关国家的法律法规，该名称不可注册”；虚构名称放行。`/nation create <名称>` 已接入。**单元测试已运行，通过。**
+- 更新时只需替换 `nation-realm.jar`（服务端）与 `nation-realm-fabric-0.1.0.jar`（客户端）。
 
 ## 已编译并通过自动测试
 - `common-protocol`：`./gradlew :common-protocol:test` —— 协议编解码往返、握手/领土增量/建筑/军队/NPC 包、未知 ID 跳过、截断拒绝、版本兼容。**已运行，通过。**

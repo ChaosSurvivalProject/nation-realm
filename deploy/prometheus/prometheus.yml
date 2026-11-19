@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: purpur
+    static_configs:
+      - targets: ['host.docker.internal:9100']
+        labels: { server: nation-1 }
+    # 指标：tick 耗时、各阶段耗时、SQL P50/P95/P99、连接池、
+    # 协议体积、丢包、队列积压、AI 成本、NPC 决策延迟、失败率。
+  - job_name: ai-worker
+    static_configs:
+      - targets: ['host.docker.internal:9101']

@@ -20,7 +20,7 @@ jobs:
       - name: Tag nightly artifacts
         run: |
           mkdir -p nightly
-          cp purpur-plugin/build/libs/*.jar nightly/ 2>/dev/null || true
+          cp purpur-plugin/build/libs/nation-realm.jar nightly/ 2>/dev/null || true
           echo "java=21 minecraft=1.21.1 purpur-api=$(grep purpur gradle/libs.versions.toml | head -1)" > nightly/BUILD_INFO.txt
       - uses: actions/upload-artifact@v4
         with:

@@ -46,11 +46,23 @@
 ./gradlew -p fabric-client build
 ```
 
+## 交付物与更新（两个 JAR）
+
+为方便更新，服务端全部模块已整合为**单个** fat JAR，客户端为**单个**模组 JAR：
+
+| 用途 | 文件 | 部署位置 |
+|------|------|----------|
+| 服务端 | `purpur-plugin/build/libs/nation-realm.jar` | `plugins/nation-realm.jar`（内含领域层/协议/AI 工作器） |
+| 客户端 | `fabric-client/build/libs/nation-realm-fabric-0.1.0.jar` | 玩家 `mods/`（可选安装） |
+
+更新时**只需替换对应的一两个 JAR**，无需替换多个模块文件。服务端 JAR 文件名不含版本号，便于直接覆盖。
+
 ## 构建与运行
 
 - 服务端核心：Purpur 1.21.1（固定构建号用于封测，见 `docs/ARCHITECTURE.md`）
 - 数据库：MySQL 8，迁移脚本在 `database/mysql/migrations/`
 - 凭据：一律通过环境变量注入（`NATION_DB_*`、`NATION_AI_KEY`），**绝不写入仓库**
+- 国家名称注册：`/nation create <名称>`；与现实国家/地区重名的名称会被拒绝并提示“为符合相关国家的法律法规，该名称不可注册”。虚构名称可正常注册。
 
 ## 文档
 

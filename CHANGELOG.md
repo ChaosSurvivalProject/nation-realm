@@ -2,6 +2,15 @@
 
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and this project adheres to SemVer.
 
+## [0.2.0] - 2026-11-20
+
+### Added
+- 国家名称注册合规校验：现实国家/地区名称（中英文）不可注册，提示“为符合相关国家的法律法规”；虚构名称可注册。新增错误码 `NAME_RESTRICTED (3007)` 与 `/nation create <名称>` 命令。
+- 单元测试覆盖名称校验（大小写/空格变体、虚构名、长度边界）。
+
+### Changed
+- 服务端整合为单个 fat JAR `nation-realm.jar`（含 purpur-plugin + nation-core + common-protocol + ai-worker + Jackson），更新时只替换一个文件。客户端保持单个模组 JAR。
+
 ## [0.1.0] - 2026-11-17
 
 ### Added

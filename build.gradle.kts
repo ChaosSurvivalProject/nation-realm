@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.spotless) apply false
+    alias(libs.plugins.shadow) apply false
 }
 
 allprojects {

@@ -1,0 +1,10 @@
+{
+  "title": "NationRealm Overview",
+  "panels": [
+    { "title": "Tick 耗时 (ms)", "type": "timeseries", "targets": [{ "expr": "nation_tick_duration_ms" }] },
+    { "title": "SQL P95 (ms)", "type": "timeseries", "targets": [{ "expr": "nation_sql_duration_p95_ms" }] },
+    { "title": "协议体积 (bytes/s)", "type": "timeseries", "targets": [{ "expr": "rate(nation_protocol_bytes_total[1m])" }] },
+    { "title": "队列积压", "type": "timeseries", "targets": [{ "expr": "nation_queue_backlog" }] },
+    { "title": "AI 每日成本", "type": "stat", "targets": [{ "expr": "nation_ai_daily_cost_units" }] }
+  ]
+}

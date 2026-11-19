@@ -29,15 +29,11 @@ jobs:
         with:
           name: test-reports
           path: '**/build/reports/tests'
-      - name: Upload JARs
+      - name: Upload server JAR (single fat JAR)
         uses: actions/upload-artifact@v4
         with:
-          name: jars
-          path: |
-            purpur-plugin/build/libs/*.jar
-            ai-worker/build/libs/*.jar
-            common-protocol/build/libs/*.jar
-            nation-core/build/libs/*.jar
+          name: server-jar
+          path: purpur-plugin/build/libs/nation-realm.jar
 
   conventional-commits:
     if: github.event_name == 'pull_request'

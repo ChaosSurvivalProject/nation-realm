@@ -26,12 +26,12 @@ jobs:
       - name: Generate checksums
         run: |
           cd purpur-plugin/build/libs
-          sha256sum *.jar > SHA256SUMS.txt
+          sha256sum nation-realm.jar > SHA256SUMS.txt
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            purpur-plugin/build/libs/*.jar
+            purpur-plugin/build/libs/nation-realm.jar
             purpur-plugin/build/libs/SHA256SUMS.txt
           generate_release_notes: true
           body: |
