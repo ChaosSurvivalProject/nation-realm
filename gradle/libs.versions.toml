@@ -10,9 +10,9 @@ minecraft = "1.21.1"
 yarn = "1.21.1+build.3"
 fabric-api = "0.114.0+1.21.1"
 loom = "1.10-SNAPSHOT"
-jackson = "2.18.2"
+jackson = "2.23.0"
 testcontainers = "1.21.4"
-spotless = "7.0.2"
+spotless = "8.11.0"
 shadow = "8.1.1"
 
 [libraries]
