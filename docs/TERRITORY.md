@@ -6,6 +6,17 @@
 - 未探索区块显示“未知”，不可凭空推断。
 - 存储用区域位图（32×32 区块/区域）+ 稀疏数组，禁止每区块一个对象（`ChunkBitmap`）。
 
+## 占领（最小单位 = 单个区块）
+- **一个区块（16×16×世界高度）是占领的最小单位**，不存在"半个区块"或"整块区域一起占领"。
+- 全局区块坐标 → region + 局部坐标用 `Math.floorDiv/floorMod` 换算，负坐标正确落入相邻区域（`ChunkCoords`）。
+- 领域服务 `TerritoryClaimService` 以单区块执行占领/转让/放弃：
+  - 幂等：同国重复占领不产生变更、不递增版本；
+  - 版本化：每次成功变更递增所属 region 版本并产出 `ChunkChange`；
+  - 线程安全：`ConcurrentHashMap` 按 region 懒加载，主线程只做内存操作。
+- 服务端 `ClaimService` 把变更转成 `CHUNK_CLAIM (0x22)` 包并异步落库；`/nation claim|release|info` 作用于玩家脚下区块。
+- 客户端 `ChunkClaimStore` 以区块为键应用增量，按版本丢弃乱序旧包，防止地图归属回退；不必等整块 region 快照。
+- 探索与占领严格分离：探索只标记 `exploredAtUtc`，占领才写 `claimedAtUtc`（历史 bug 已修复）。
+
 ## 探索
 玩家移动按区块坐标批量入队、去重、异步落库；不加载区块。落库失败退避重试，不循环刷日志。
 

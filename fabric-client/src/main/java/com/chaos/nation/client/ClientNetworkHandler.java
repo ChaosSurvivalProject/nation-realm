@@ -51,6 +51,13 @@ public final class ClientNetworkHandler {
         store.applySnapshot(snapshot);
     }
 
+    /** 应用单区块占领增量：以区块为最小单位，按 region 版本丢弃乱序旧包。 */
+    public void onChunkClaim(int chunkX, int chunkZ, int nationId, long regionVersion,
+            long claimedAtUtc) {
+        if (!highDetailEnabled) return;
+        store.applyChunkClaim(chunkX, chunkZ, nationId, regionVersion, claimedAtUtc);
+    }
+
     public void register() {
         // 真实 payload 注册见 PROTOCOL.md；此处仅示意通道注册点，避免空壳。
         // PayloadTypeRegistry.playS2C().register(...)

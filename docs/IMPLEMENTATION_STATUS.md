@@ -1,8 +1,16 @@
 # 实施状态（诚实报告）
 
-生成日期：2026-11-17，更新 2026-11-20。标注规则：只有“已运行且通过”才算完成。
+生成日期：2026-11-17，更新 2026-11-21。标注规则：只有“已运行且通过”才算完成。
 
-## 本次更新（0.2.0）
+## 本次更新（0.3.0）—— 单区块占领优化
+- **占领最小单位 = 单个区块**：新增 `ChunkCoords`（负坐标 floorDiv/floorMod、方块→区块换算）、`TerritoryClaimService`（单区块占领/转让/放弃、幂等、region 版本递增、变更事件），**单元测试已运行，通过**（坐标 4 项 + 服务 8 项）。
+- **协议 `CHUNK_CLAIM (0x22)`**：单区块占领消息与编解码，**往返测试已运行，通过**（含负坐标与放弃包）；`PacketCodec` 全量测试通过。
+- **服务端 `ClaimService`**：领域变更→协议包→异步落库编排；`/nation claim|release|info` 作用于玩家脚下区块。**单元测试已运行，通过**（4 项）。
+- **客户端 `ChunkClaimStore`**：按区块应用增量、按版本丢弃乱序旧包，防地图回退。**单元测试已运行，通过**（5 项，Fabric 独立构建）。
+- **修复**：`ChunkBitmap.markExplored` 不再把探索时间写成占领时间；探索/占领时间分离，`release` 只清占领。**测试已运行，通过。**
+- 服务端/客户端 JAR 已重新构建产出（`nation-realm.jar` 与 `nation-realm-fabric-0.1.0.jar`），fat JAR 已核验含全部新类。
+
+## 上次更新（0.2.0）
 - **服务端整合为单一 JAR**：`./gradlew build` 产出 `purpur-plugin/build/libs/nation-realm.jar`（fat JAR，含 purpur-plugin + nation-core + common-protocol + ai-worker + Jackson，1352 个条目，约 2.5MB）。**已运行，BUILD SUCCESSFUL，已核验内含全部模块类。**
 - **国家名称注册合规校验**：`NationNameRegistry` 拦截现实国家/地区名称（中英文，含大小写/空格变体），返回 `NAME_RESTRICTED(3007)` 与“为符合相关国家的法律法规，该名称不可注册”；虚构名称放行。`/nation create <名称>` 已接入。**单元测试已运行，通过。**
 - 更新时只需替换 `nation-realm.jar`（服务端）与 `nation-realm-fabric-0.1.0.jar`（客户端）。

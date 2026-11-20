@@ -2,6 +2,20 @@
 
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and this project adheres to SemVer.
 
+## [0.3.0] - 2026-11-21
+
+### Added
+- 单区块占领：新增 `ChunkCoords`（含负坐标 floorDiv 换算与方块→区块换算）、`TerritoryClaimService`（以单个区块为最小单位的占领/转让/放弃、幂等、region 版本递增、变更事件）。
+- 协议新增 `CHUNK_CLAIM (0x22)` 单区块占领消息与编解码；客户端 `ChunkClaimStore` 按区块应用增量并按版本丢弃乱序旧包。
+- 服务端 `ClaimService` 编排领域变更→协议包→异步落库；`/nation claim|release|info` 作用于玩家脚下区块。
+- 新增 5+8+4+5 项单元测试覆盖坐标换算、占领服务、协议往返与客户端视图。
+
+### Fixed
+- `ChunkBitmap.markExplored` 不再把探索时间误写进占领时间；探索时间与占领时间彻底分离，`release` 只清占领不动探索标记。
+
+### Changed
+- 服务端/客户端仍是各自单一 JAR；本次为行为更新，直接覆盖 JAR 即可升级。
+
 ## [0.2.0] - 2026-11-20
 
 ### Added

@@ -27,6 +27,7 @@ header  = requestId:u64 | timestampMillis:u64 | nationDataVersion:u64 | errorCod
 | 0x16 | NPC_STATE | 含 ai 标记（AI 身份永久可见） |
 | 0x20 | OPERATION_REQUEST | 只表达意图；服务端再次验证权限 |
 | 0x21 | OPERATION_ACK | ackRequestId/success/detail |
+| 0x22 | CHUNK_CLAIM | 单区块占领变更：chunkX/chunkZ/nationId(0=放弃)/regionVersion/claimedAtUtc |
 | 0x2F | ERROR | errorCode + 可读消息（不含堆栈） |
 | 0x30 | HEARTBEAT | nonce + clientTime |
 

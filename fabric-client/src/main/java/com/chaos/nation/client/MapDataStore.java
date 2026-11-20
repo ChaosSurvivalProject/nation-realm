@@ -17,6 +17,7 @@ public final class MapDataStore {
     }
 
     private final Map<Long, RegionSnapshotLike> regions = new HashMap<>();
+    private final ChunkClaimStore chunkClaims = new ChunkClaimStore();
     private String status = "未连接";
     private boolean colorBlindMode;
     private boolean reducedMotion;
@@ -39,6 +40,19 @@ public final class MapDataStore {
     }
 
     public int loadedRegionCount() { return regions.size(); }
+
+    /** 应用单区块占领增量；返回是否为新版本（旧包被丢弃）。 */
+    public boolean applyChunkClaim(int chunkX, int chunkZ, int nationId, long regionVersion,
+            long claimedAtUtc) {
+        return chunkClaims.apply(chunkX, chunkZ, nationId, regionVersion, claimedAtUtc);
+    }
+
+    /** 查询单区块归属（优先增量数据，0=无主）。 */
+    public int ownerAt(int chunkX, int chunkZ) { return chunkClaims.ownerAt(chunkX, chunkZ); }
+
+    public long chunkVersionAt(int chunkX, int chunkZ) { return chunkClaims.versionAt(chunkX, chunkZ); }
+
+    public ChunkClaimStore chunkClaims() { return chunkClaims; }
 
     private static long key(int x, int z) {
         return (((long) x) << 32) ^ (z & 0xFFFFFFFFL);

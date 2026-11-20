@@ -19,7 +19,12 @@ dependencies {
 
     // 复用纯 Java 协议模块（本地构建产物，避免发布期私服）
     implementation(files("../common-protocol/build/libs/common-protocol-0.1.0-SNAPSHOT.jar"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testImplementation("org.assertj:assertj-core:3.26.3")
 }
+
+tasks.withType<Test>().configureEach { useJUnitPlatform() }
 
 java {
     toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
