@@ -19,6 +19,8 @@ shadow = "8.1.1"
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+# JUnit 6 起 platform 与 jupiter 版本号统一；显式对齐 launcher 避免 Gradle 内置旧版导致发现失败。
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 purpur-api = { module = "org.purpurmc.purpur:purpur-api", version.ref = "purpur" }
@@ -28,7 +30,7 @@ testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.re
 testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
 
 [bundles]
-test = ["junit-api", "junit-engine", "junit-params", "mockito-core", "assertj-core"]
+test = ["junit-api", "junit-engine", "junit-params", "junit-platform-launcher", "mockito-core", "assertj-core"]
 
 [plugins]
 java-library = { id = "java-library" }

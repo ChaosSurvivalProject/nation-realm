@@ -73,8 +73,8 @@ public final class AiClient {
   private String callHttp(String systemPrompt, String userPrompt) throws Exception {
     String body =
         """
-                {"model":"%s","messages":[{"role":"system","content":%s},{"role":"user","content":%s}]}
-                """
+        {"model":"%s","messages":[{"role":"system","content":%s},{"role":"user","content":%s}]}
+        """
             .formatted(model, jsonEscape(systemPrompt), jsonEscape(userPrompt));
     HttpRequest request =
         HttpRequest.newBuilder(URI.create(baseUrl))

@@ -28,13 +28,12 @@ class LedgerTest {
   @Test
   void unbalancedEntry_isRejected() {
     Ledger ledger = new Ledger();
-    assertThatThrownBy(
-            () ->
-                ledger.post(
-                    "bad",
-                    "错误交易",
-                    List.of(new Entry("a", Money.of(100), ""), new Entry("b", Money.of(-50), "")),
-                    1L))
+    assertThatThrownBy(() ->
+            ledger.post(
+                "bad",
+                "错误交易",
+                List.of(new Entry("a", Money.of(100), ""), new Entry("b", Money.of(-50), "")),
+                1L))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("借贷不平衡");
     assertThat(ledger.journals()).isEmpty();
