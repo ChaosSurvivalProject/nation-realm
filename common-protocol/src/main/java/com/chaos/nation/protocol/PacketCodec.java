@@ -3,6 +3,7 @@ package com.chaos.nation.protocol;
 import com.chaos.nation.protocol.packets.DataPackets;
 import com.chaos.nation.protocol.packets.DataPackets.ArmyState;
 import com.chaos.nation.protocol.packets.DataPackets.BuildingState;
+import com.chaos.nation.protocol.packets.DataPackets.ChunkClaim;
 import com.chaos.nation.protocol.packets.DataPackets.ErrorPacket;
 import com.chaos.nation.protocol.packets.DataPackets.Heartbeat;
 import com.chaos.nation.protocol.packets.DataPackets.NationSummary;
@@ -122,6 +123,12 @@ public final class PacketCodec {
         w.writeVarInt(q.ownerNationId()[i]);
       }
       w.writeBytes(q.unknownMask());
+    } else if (packet instanceof ChunkClaim q) {
+      w.writeInt(q.chunkX());
+      w.writeInt(q.chunkZ());
+      w.writeVarInt(q.nationId());
+      w.writeLong(q.regionVersion());
+      w.writeLong(q.claimedAtUtc());
     } else if (packet instanceof RegionSnapshot q) {
       w.writeInt(q.regionX());
       w.writeInt(q.regionZ());
@@ -275,6 +282,8 @@ public final class PacketCodec {
               h, r.readString(), r.readInt(), r.readInt(), r.readBytes());
       case OPERATION_ACK ->
           new DataPackets.OperationAck(h, r.readLong(), r.readBoolean(), r.readString());
+      case CHUNK_CLAIM ->
+          new ChunkClaim(h, r.readInt(), r.readInt(), r.readVarInt(), r.readLong(), r.readLong());
       case ERROR -> new DataPackets.ErrorPacket(h, r.readInt(), r.readString());
       case HEARTBEAT -> new DataPackets.Heartbeat(h, r.readLong(), r.readLong());
     };

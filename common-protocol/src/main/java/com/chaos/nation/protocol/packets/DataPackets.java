@@ -48,6 +48,19 @@ public final class DataPackets {
       MessageHeader header, long ackRequestId, boolean success, String detail) implements Packet {}
 
   /**
+   * 单区块占领变更：以<strong>一个区块</strong>为最小单位下发。 nationId=0 表示放弃主张； regionVersion 为该区块所属 region
+   * 的单调版本，客户端据此丢弃旧包。
+   */
+  public record ChunkClaim(
+      MessageHeader header,
+      int chunkX,
+      int chunkZ,
+      int nationId,
+      long regionVersion,
+      long claimedAtUtc)
+      implements Packet {}
+
+  /**
    * 区域快照：region 内区块所有权稠密数组（每区块一个 int：国家 ID，0=未知）。 只在订阅后首次或版本差距过大时下发，平时用 {@link TerritoryDelta} 增量。
    */
   public record RegionSnapshot(

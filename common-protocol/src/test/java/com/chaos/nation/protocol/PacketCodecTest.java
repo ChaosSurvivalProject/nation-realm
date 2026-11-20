@@ -49,6 +49,30 @@ class PacketCodecTest {
   }
 
   @Test
+  void chunkClaim_roundTrip_preservesSingleChunkFields() {
+    MessageHeader h = MessageHeader.of(MessageType.CHUNK_CLAIM, 88L, 500L);
+    // 负坐标也要能往返（region 边界区块）
+    DataPackets.ChunkClaim claim = new DataPackets.ChunkClaim(h, -1, -33, 12, 42L, 1700000000000L);
+    Packet decoded = codec.decode(codec.encode(claim));
+    assertThat(decoded).isInstanceOf(DataPackets.ChunkClaim.class);
+    DataPackets.ChunkClaim out = (DataPackets.ChunkClaim) decoded;
+    assertThat(out.chunkX()).isEqualTo(-1);
+    assertThat(out.chunkZ()).isEqualTo(-33);
+    assertThat(out.nationId()).isEqualTo(12);
+    assertThat(out.regionVersion()).isEqualTo(42L);
+    assertThat(out.claimedAtUtc()).isEqualTo(1700000000000L);
+  }
+
+  @Test
+  void chunkClaim_releaseCarriesZeroOwner() {
+    MessageHeader h = MessageHeader.of(MessageType.CHUNK_CLAIM, 89L, 501L);
+    DataPackets.ChunkClaim release = new DataPackets.ChunkClaim(h, 7, 9, 0, 8L, 0L);
+    DataPackets.ChunkClaim out = (DataPackets.ChunkClaim) codec.decode(codec.encode(release));
+    assertThat(out.nationId()).isZero();
+    assertThat(out.regionVersion()).isEqualTo(8L);
+  }
+
+  @Test
   void operationAck_withUnicodeDetail_roundTrips() {
     MessageHeader h = MessageHeader.of(MessageType.OPERATION_ACK, 9L, 1L);
     DataPackets.OperationAck ack = new DataPackets.OperationAck(h, 9L, true, "建都成功 ✅");

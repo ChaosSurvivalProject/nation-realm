@@ -13,6 +13,7 @@ public enum MessageType {
   NPC_STATE(0x16),
   OPERATION_REQUEST(0x20),
   OPERATION_ACK(0x21),
+  CHUNK_CLAIM(0x22),
   ERROR(0x2F),
   HEARTBEAT(0x30);
 
