@@ -18,7 +18,13 @@ public final class PermissionMatrix {
     COMMAND_ARMY,
     BUILD,
     TAX,
-    PARDON
+    PARDON,
+    // 电台权限：复用现有权限矩阵，不新建平行体系。
+    RADIO_LISTEN,
+    RADIO_TRANSMIT,
+    RADIO_TUNE,
+    RADIO_BUILD_TOWER,
+    RADIO_JAM
   }
 
   /** 政治权力职位——仅真人玩家可持有。 */
