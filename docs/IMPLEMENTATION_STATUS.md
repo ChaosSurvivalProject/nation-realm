@@ -6,7 +6,7 @@
 按已定方案**只做一期**；二期（voice-api/voice-server/客户端音频栈/近场与己方台/调谐 UI/2D 覆盖图）与三期（跨服/中继/干扰俘获/3D overlay）**未开始，不得标完成**。
 
 ### 一期已实现且已运行通过
-- **CI 修绿**：`V1__baseline.sql` currency 字段 `VARCHAR(8)→VARCHAR(16)`（`'CNY_MINOR'` 9 字符导致 MySQL 8 `ERROR 1067` 迁移中止，Database Integration 失败根因）；`release.yml` 步骤 `if` 禁止直接引用 `secrets` 上下文（0 jobs failure），改为 job 级 env 中转。本地 `./gradlew test` 通过、SQL 默认值静态校验全部 fit；**远端 Database job 结果待下一次推送后观测**。
+- **CI 修绿**：① `V1__baseline.sql` currency 字段 `VARCHAR(8)→VARCHAR(16)`（`'CNY_MINOR'` 9 字符导致 MySQL 8 `ERROR 1067` 迁移中止）；② `release.yml` 步骤 `if` 禁止直接引用 `secrets` 上下文（0 jobs failure），改为 job 级 env 中转；③ database job 原用 `test --tests '*IntegrationTest'` 因无匹配类且 test task 排除 integration 标签而报 `No tests found`，改为独立 `integrationTest` task（`includeTags("integration")`）+ 新增 `RadioMigrationIntegrationTest(@Tag integration)` 直连 CI MySQL 校验 V1/V2 建表/currency 列宽/版本记录，workflow 应用 V1+V2 后运行它。本地 `./gradlew test` 通过、SQL 默认值静态校验全部 fit、`integrationTest` 本地无 DB 时正确 SKIPPED。**远端 CI 最终结果见本节末附注**。
 - **band plan 与领域对象**：`Frequency`(kHz 整数/MHz 显示)、`BandPlan`(3 预设频段/频道栅格/亚音)、呼号禁用词校验(现实国家/紧急呼号)、`Station/Transmitter/RadioSubscription/TransmissionSession/SignalReport`、仓储接口、`RelayLink/JammingRecord` 三期骨架。13 项单测通过。
 - **权限矩阵增量 + `RadioAccessPolicy`**：5 个 RADIO_* 权限位复用现有矩阵；单一纯函数判定 PUBLIC 恒放行/FACTION 同国/盟国可听不可发/中立交战不可听/NPC 永不发射建塔。7 项单测通过。
 - **`LinkBudget` 纯函数**：标准 FSPL + 游戏化损耗，参数集中且标"需实测标定"，确定性慢衰落；只算电台链路、与近场语音距离严格分离；超出设计半径静默；信号四档。6 项单测（含 200 种子确定性属性测试）通过。
@@ -53,6 +53,10 @@
 - 阶段 7：Velocity 子模块、Redis 集成、多服故障演练。
 - 阶段 8：Hangar/Modrinth 实际发布（需 secrets）、数据库备份恢复演练脚本自动化。
 - 可观测性：Micrometer 指标端点与结构化日志落地（配置与面板已备，代码埋点待补）。
+
+## CI 最终核验（0.4.0 交付时）
+- HEAD `05ad2a4` 远端 GitHub Actions 全部通过：**CI ✅ / CodeQL ✅ / Database Integration ✅**（含 V1+V2 迁移直连 MySQL 的 4 项集成断言）。此前的 currency 超长、`secrets-in-if`、`No tests found` 三个失败根因均已修复并在远端验证。
+- Release 工作流仍为 tag-only（`v*`），当前无 tag，未触发；其 `secrets-in-if` 校验问题已修，但因无 tag 无法在本轮实跑验证，标"待打 tag 时观测"。
 
 ## 编译环境说明
 - 本环境初始为 Java 20，已安装 JDK 21（`/opt/jdk21`）用于构建。
