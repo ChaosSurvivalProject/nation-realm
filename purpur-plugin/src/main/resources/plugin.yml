@@ -12,6 +12,10 @@ commands:
     description: 国家系统主命令
     usage: /nation [sub]
     permission: nationrealm.use
+  radio:
+    description: 电台与客户端下载提示（可选功能）
+    usage: /radio
+    permission: nationrealm.use
 permissions:
   nationrealm.use:
     description: 使用 /nation

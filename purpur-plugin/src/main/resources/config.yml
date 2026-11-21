@@ -27,3 +27,21 @@ npc:
 # 启动只警告、不阻断离线玩法。
 ai:
   base-url: ${NATION_AI_BASE_URL:https://api.deepseek.com/v1/chat/completions}
+
+# 电台系统（一期控制面骨架；音频走独立 UDP，二期 voice-server）
+radio:
+  enabled: true
+  # 客户端下载链接：当前仓库 Releases 为空，无落点。
+  # 【待运营补齐】先建 Releases 或官网资源中心下载项，再把真实 URL 填到此处或环境变量
+  # NATION_RADIO_DOWNLOAD_URL。留空时进服提示只发文案不发链接，绝不编造/占位/猜测 URL。
+  # 目标页需带版本兼容说明与校验值（SHA-256）。
+  client-download-url: ${NATION_RADIO_DOWNLOAD_URL:}
+  default-faction-scope: FACTION   # FACTION / ROLE_SQUAD / SELF(字面仅本人，歧义见文档)
+  # 链路参数：游戏化拟真，需实测标定，非已验证数字。
+  design-radius-blocks: 256
+  environment-loss-db: 12.0
+  loss-per-opaque-chunk-db: 6.0
+  transmit-session-seconds: 30    # 短时票据建议 30s
+  prompt-cooldown-seconds: 600    # 进服提示防刷屏
+  cross-server:
+    enabled: false                 # 默认关闭，等阶段 7 多服集成演练完成才开放

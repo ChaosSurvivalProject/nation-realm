@@ -2,10 +2,16 @@ package com.chaos.nation.plugin;
 
 import com.chaos.nation.core.territory.TerritoryClaimService;
 import com.chaos.nation.plugin.command.NationCommand;
+import com.chaos.nation.plugin.command.RadioCommand;
 import com.chaos.nation.plugin.config.PluginConfig;
 import com.chaos.nation.plugin.service.ClaimService;
 import com.chaos.nation.plugin.service.ExplorationService;
+import com.chaos.nation.plugin.service.RadioJoinPrompt;
 import java.util.logging.Level;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -14,6 +20,7 @@ public final class NationPlugin extends JavaPlugin {
   private PluginConfig config;
   private ExplorationService exploration;
   private ClaimService claims;
+  private RadioJoinPrompt radioPrompt;
   private BukkitTask flushTask;
   private final ProtocolCapability capability = new ProtocolCapability();
 
@@ -43,6 +50,29 @@ public final class NationPlugin extends JavaPlugin {
     if (nationCommand != null) {
       nationCommand.setExecutor(new NationCommand(claims));
     }
+
+    // 电台一期骨架：客户端安装提示（一次性可点击 + 冷却）+ /radio 复述。
+    // 未安装客户端不踢出、不影响任何原有玩法；下载链接为空则只发文案。
+    radioPrompt = new RadioJoinPrompt(config.radio());
+    var radioCommand = getCommand("radio");
+    if (radioCommand != null) {
+      radioCommand.setExecutor(new RadioCommand(radioPrompt, config.radio().enabled()));
+    }
+    getServer()
+        .getPluginManager()
+        .registerEvents(
+            new Listener() {
+              @EventHandler
+              public void onJoin(PlayerJoinEvent event) {
+                radioPrompt.onJoin(event.getPlayer());
+              }
+
+              @EventHandler
+              public void onQuit(PlayerQuitEvent event) {
+                radioPrompt.forget(event.getPlayer());
+              }
+            },
+            this);
 
     exploration =
         new ExplorationService(
