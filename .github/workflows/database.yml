@@ -31,6 +31,10 @@ jobs:
           NATION_DB_HOST: 127.0.0.1
           NATION_DB_USER: root
           NATION_DB_PASS: test_root_pw
+          NATION_DB_NAME: nation_realm_test
         run: |
           mysql -h127.0.0.1 -uroot -ptest_root_pw nation_realm_test < database/mysql/migrations/V1__baseline.sql
-          ./gradlew :nation-core:test --tests '*IntegrationTest' --no-daemon
+          mysql -h127.0.0.1 -uroot -ptest_root_pw nation_realm_test < database/mysql/migrations/V2__radio.sql
+          # 集成测试用 @Tag("integration") 标记，必须走独立 integrationTest task；
+          # 普通 test task 排除该标签，直接用 --tests 过滤会报 No tests found。
+          ./gradlew :nation-core:integrationTest --no-daemon

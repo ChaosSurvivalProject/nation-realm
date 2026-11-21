@@ -12,6 +12,7 @@ fabric-api = "0.114.0+1.21.1"
 loom = "1.10-SNAPSHOT"
 jackson = "2.23.0"
 testcontainers = "1.21.4"
+mysql-connector = "8.4.0"
 spotless = "8.11.0"
 shadow = "8.1.1"
 
@@ -28,6 +29,7 @@ jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", ver
 jackson-dataclass = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
+mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector" }
 
 [bundles]
 test = ["junit-api", "junit-engine", "junit-params", "junit-platform-launcher", "mockito-core", "assertj-core"]
