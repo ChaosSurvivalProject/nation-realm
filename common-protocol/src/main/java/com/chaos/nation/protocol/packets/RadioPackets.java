@@ -6,7 +6,8 @@ import com.chaos.nation.protocol.Packet;
 /**
  * 电台控制面消息族：只走现有 MC 连接，<strong>音频帧绝不进入本协议</strong>（媒体面走独立 UDP）。
  *
- * <p>字段顺序即线上顺序；字符串/字节数组由编解码器写 length 前缀。新增字段一律追加在尾部， 利用扩展块与未知字段跳过小版本兼容。位置以服务端 Player 坐标为准，客户端上报仅用于偏差校验。
+ * <p>字段顺序即线上顺序；字符串/字节数组由编解码器写 length 前缀。新增字段一律追加在尾部， 利用扩展块与未知字段跳过小版本兼容。位置以服务端 Player
+ * 坐标为准，客户端上报仅用于偏差校验。
  */
 public final class RadioPackets {
   private RadioPackets() {}
@@ -22,8 +23,8 @@ public final class RadioPackets {
       implements Packet {}
 
   /** 订阅请求：订阅某台（收听）。 */
-  public record Subscribe(
-      MessageHeader header, long stationId, long epoch, boolean subscribe) implements Packet {}
+  public record Subscribe(MessageHeader header, long stationId, long epoch, boolean subscribe)
+      implements Packet {}
 
   /** 订阅结果：服务端权威决定是否可听。 */
   public record SubscribeResult(

@@ -44,8 +44,7 @@ class RadioProtocolTest {
     MessageHeader h = MessageHeader.of(MessageType.RADIO_TRANSMIT_START, 14L, 1L);
     RadioPackets.TransmitStart start =
         new RadioPackets.TransmitStart(h, 7L, "sess-abc", 2, -4, 1700000000000L);
-    RadioPackets.TransmitStart so =
-        (RadioPackets.TransmitStart) codec.decode(codec.encode(start));
+    RadioPackets.TransmitStart so = (RadioPackets.TransmitStart) codec.decode(codec.encode(start));
     assertThat(so.sessionId()).isEqualTo("sess-abc");
     assertThat(so.reportedChunkZ()).isEqualTo(-4);
     assertThat(so.clientTimeUtc()).isEqualTo(1700000000000L);
@@ -59,18 +58,15 @@ class RadioProtocolTest {
   @Test
   void signalUpdateAndTowerStatus_roundTrip() {
     MessageHeader h = MessageHeader.of(MessageType.RADIO_SIGNAL_UPDATE, 16L, 1L);
-    RadioPackets.SignalUpdate su =
-        new RadioPackets.SignalUpdate(h, 100L, 6, 8, 1, 15500, 42L);
-    RadioPackets.SignalUpdate so =
-        (RadioPackets.SignalUpdate) codec.decode(codec.encode(su));
+    RadioPackets.SignalUpdate su = new RadioPackets.SignalUpdate(h, 100L, 6, 8, 1, 15500, 42L);
+    RadioPackets.SignalUpdate so = (RadioPackets.SignalUpdate) codec.decode(codec.encode(su));
     assertThat(so.qualityOrdinal()).isEqualTo(1);
     assertThat(so.snrPermille()).isEqualTo(15500);
     assertThat(so.version()).isEqualTo(42L);
 
     MessageHeader h2 = MessageHeader.of(MessageType.RADIO_TOWER_STATUS, 17L, 1L);
     RadioPackets.TowerStatus ts = new RadioPackets.TowerStatus(h2, 100L, 2, 7L, 9L);
-    RadioPackets.TowerStatus to =
-        (RadioPackets.TowerStatus) codec.decode(codec.encode(ts));
+    RadioPackets.TowerStatus to = (RadioPackets.TowerStatus) codec.decode(codec.encode(ts));
     assertThat(to.statusOrdinal()).isEqualTo(2);
     assertThat(to.ownerNationId()).isEqualTo(7L);
   }
@@ -92,8 +88,7 @@ class RadioProtocolTest {
     HandshakePackets.Response resp =
         new HandshakePackets.Response(
             h, true, 1, 1, "b200", HandshakePackets.Flags.RADIO, false, "");
-    HandshakePackets.Response out =
-        (HandshakePackets.Response) codec.decode(codec.encode(resp));
+    HandshakePackets.Response out = (HandshakePackets.Response) codec.decode(codec.encode(resp));
     assertThat(out.featureFlags() & HandshakePackets.Flags.RADIO).isNotZero();
   }
 

@@ -69,9 +69,7 @@ public final class RadioAccessPolicy {
   public static Result evaluate(Context c, Action action) {
     // NPC 永无发射与建塔权（干扰同样禁止，防 NPC 借 AI 越权）。
     if (c.npc()
-        && (action == Action.TRANSMIT
-            || action == Action.BUILD_TOWER
-            || action == Action.JAM)) {
+        && (action == Action.TRANSMIT || action == Action.BUILD_TOWER || action == Action.JAM)) {
       return Result.deny(Reason.NPC_DENIED);
     }
 
@@ -79,8 +77,7 @@ public final class RadioAccessPolicy {
       case LISTEN -> evaluateListen(c);
       case TRANSMIT -> evaluateTransmit(c);
       case TUNE -> c.hasTune() ? Result.allow() : Result.deny(Reason.NO_PERMISSION);
-      case BUILD_TOWER ->
-          c.hasBuildTower() ? Result.allow() : Result.deny(Reason.NO_PERMISSION);
+      case BUILD_TOWER -> c.hasBuildTower() ? Result.allow() : Result.deny(Reason.NO_PERMISSION);
       case JAM -> c.hasJam() ? Result.allow() : Result.deny(Reason.NO_PERMISSION);
     };
   }

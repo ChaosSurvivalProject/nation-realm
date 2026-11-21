@@ -6,11 +6,10 @@ package com.chaos.nation.core.radio;
  * <p><strong>两套距离严格分开</strong>：本类只算<strong>电台</strong>链路（收听者↔发射源），
  * 不用于近场语音（说话玩家↔周围玩家）。近场语音是二期客户端音频栈，另用距离+朝向+遮挡模型。
  *
- * <p>模型 = 标准 FSPL 自由空间损耗 + 游戏化额外损耗（不透明区块遮挡、环境损耗、确定性慢衰落），
- * 把有效通信距离压进设计半径，避免几百格内全图清晰。
+ * <p>模型 = 标准 FSPL 自由空间损耗 + 游戏化额外损耗（不透明区块遮挡、环境损耗、确定性慢衰落）， 把有效通信距离压进设计半径，避免几百格内全图清晰。
  *
- * <p>所有参数集中在 {@link Config}，<strong>需实测标定</strong>——不是已验证数字，不得当真实物理值引用。
- * 输入相同则输出完全相同（含地形采样由调用方以 {@link TerrainSample} 显式传入，不在函数内读世界）。
+ * <p>所有参数集中在 {@link Config}，<strong>需实测标定</strong>——不是已验证数字，不得当真实物理值引用。 输入相同则输出完全相同（含地形采样由调用方以
+ * {@link TerrainSample} 显式传入，不在函数内读世界）。
  */
 public final class LinkBudget {
   /** 地形采样：由服务端按塔→收听者路径采样后传入，保证纯函数。 */
@@ -101,9 +100,7 @@ public final class LinkBudget {
         terrainTag);
   }
 
-  /**
-   * 确定性慢衰落：用种子与距离做无状态哈希抖动，保证同输入同输出（可重现，便于属性测试）。
-   */
+  /** 确定性慢衰落：用种子与距离做无状态哈希抖动，保证同输入同输出（可重现，便于属性测试）。 */
   static double deterministicSlowFade(long seed, double distance, double amplitudeDb) {
     long v = seed ^ Double.doubleToLongBits(distance);
     v ^= v >>> 33;

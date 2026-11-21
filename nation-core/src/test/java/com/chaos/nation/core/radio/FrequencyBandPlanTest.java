@@ -48,8 +48,7 @@ class FrequencyBandPlanTest {
         new Station(1, "NATION-1", Frequency.ofMhz(433.0), 0, StationScope.FACTION, 7, true, 1);
     assertThat(st.isPublic()).isFalse();
     assertThatThrownBy(
-            () ->
-                new Station(0, "x", Frequency.ofMhz(433.0), 0, StationScope.PUBLIC, 0, true, 1))
+            () -> new Station(0, "x", Frequency.ofMhz(433.0), 0, StationScope.PUBLIC, 0, true, 1))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

@@ -5,8 +5,7 @@ import java.util.Objects;
 /**
  * 无线频率：内部以<strong>整数 kHz</strong>存储（避免浮点误差），展示时换算为 MHz。
  *
- * <p>这是游戏内拟真：频段编号模仿真实无线电划分，但仅用于游戏，UI 必须标注
- * "虚构频段，仅供游戏"。不得把它当作真实无线电发射参数。
+ * <p>这是游戏内拟真：频段编号模仿真实无线电划分，但仅用于游戏，UI 必须标注 "虚构频段，仅供游戏"。不得把它当作真实无线电发射参数。
  */
 public final class Frequency {
   private final int khz;

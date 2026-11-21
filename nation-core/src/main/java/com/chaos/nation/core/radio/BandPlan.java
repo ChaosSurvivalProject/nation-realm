@@ -6,8 +6,7 @@ import java.util.List;
  * 频段规划（band plan）：定义可用频段范围、频道间隔与亚音（CTCSS 式逻辑隔离）。
  *
  * <p>频段编号模仿真实无线电划分，但<strong>纯属游戏内拟真</strong>，UI 必须标注
- * "虚构频段，仅供游戏"。频道间隔、半径等参数集中于此，<strong>需实测标定</strong>，
- * 不作为已验证数字。一期 UI 只给预设频道与简化半径条（假设 D）。
+ * "虚构频段，仅供游戏"。频道间隔、半径等参数集中于此，<strong>需实测标定</strong>， 不作为已验证数字。一期 UI 只给预设频道与简化半径条（假设 D）。
  */
 public final class BandPlan {
   /** 亚音使用整数存储（单位 0.1 Hz，如 1000 = 100.0 Hz），避免浮点比较。 */
@@ -42,9 +41,7 @@ public final class BandPlan {
           new SubTone(4, "156.7", 1567),
           new SubTone(5, "192.8", 1928));
 
-  /**
-   * 默认游戏频段：编号贴近真实业余/公共频段，但仅为拟真。 一期只暴露这三个预设频段（假设 D）。
-   */
+  /** 默认游戏频段：编号贴近真实业余/公共频段，但仅为拟真。 一期只暴露这三个预设频段（假设 D）。 */
   public static final Band VHF_AIR =
       new Band("VHF_AIR", "VHF 航空段(虚构)", 118_000, 136_000, 25, STANDARD_SUB_TONES);
 

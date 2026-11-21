@@ -348,10 +348,8 @@ public final class PacketCodec {
               r.readVarInt(),
               r.readLong());
       case RADIO_TOWER_STATUS ->
-          new RadioPackets.TowerStatus(
-              h, r.readLong(), r.readVarInt(), r.readLong(), r.readLong());
-      case RADIO_JAM ->
-          new RadioPackets.Jam(h, r.readLong(), r.readLong(), r.readBoolean());
+          new RadioPackets.TowerStatus(h, r.readLong(), r.readVarInt(), r.readLong(), r.readLong());
+      case RADIO_JAM -> new RadioPackets.Jam(h, r.readLong(), r.readLong(), r.readBoolean());
     };
   }
 }

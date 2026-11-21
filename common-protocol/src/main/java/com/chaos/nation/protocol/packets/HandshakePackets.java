@@ -13,6 +13,7 @@ public final class HandshakePackets {
     public static final int COMPRESSION = 1 << 1;
     public static final int NPC_LAYER = 1 << 2;
     public static final int ARMY_LAYER = 1 << 3;
+
     /** 电台控制面支持；无此位的客户端只收提示与下载链接，不收 Radio* 消息。 */
     public static final int RADIO = 1 << 4;
   }

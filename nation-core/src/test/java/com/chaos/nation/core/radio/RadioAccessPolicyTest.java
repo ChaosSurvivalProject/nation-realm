@@ -23,8 +23,7 @@ class RadioAccessPolicyTest {
 
   @Test
   void publicListen_alwaysAllowed_evenForStatelessAndEnemy() {
-    Context stateless =
-        ctx(StationScope.PUBLIC, 0, 0, Relation.UNKNOWN, false, false, false);
+    Context stateless = ctx(StationScope.PUBLIC, 0, 0, Relation.UNKNOWN, false, false, false);
     assertThat(RadioAccessPolicy.evaluate(stateless, Action.LISTEN).allowed()).isTrue();
     Context enemy = ctx(StationScope.PUBLIC, 7, 8, Relation.WAR, false, false, false);
     assertThat(RadioAccessPolicy.evaluate(enemy, Action.LISTEN).allowed()).isTrue();
@@ -32,17 +31,14 @@ class RadioAccessPolicyTest {
 
   @Test
   void factionListen_sameNationAllowed_strangersDenied() {
-    Context same =
-        ctx(StationScope.FACTION, 7, 7, Relation.UNKNOWN, true, true, false);
+    Context same = ctx(StationScope.FACTION, 7, 7, Relation.UNKNOWN, true, true, false);
     assertThat(RadioAccessPolicy.evaluate(same, Action.LISTEN).allowed()).isTrue();
 
-    Context hostile =
-        ctx(StationScope.FACTION, 7, 8, Relation.HOSTILE, true, true, false);
+    Context hostile = ctx(StationScope.FACTION, 7, 8, Relation.HOSTILE, true, true, false);
     assertThat(RadioAccessPolicy.evaluate(hostile, Action.LISTEN).reason())
         .isEqualTo(Reason.HOSTILE);
 
-    Context neutral =
-        ctx(StationScope.FACTION, 7, 8, Relation.NEUTRAL, true, true, false);
+    Context neutral = ctx(StationScope.FACTION, 7, 8, Relation.NEUTRAL, true, true, false);
     assertThat(RadioAccessPolicy.evaluate(neutral, Action.LISTEN).allowed()).isFalse();
   }
 
@@ -57,8 +53,7 @@ class RadioAccessPolicyTest {
 
   @Test
   void sameNation_canTransmit_onFactionStation() {
-    Context same =
-        ctx(StationScope.FACTION, 7, 7, Relation.UNKNOWN, true, true, false);
+    Context same = ctx(StationScope.FACTION, 7, 7, Relation.UNKNOWN, true, true, false);
     assertThat(RadioAccessPolicy.evaluate(same, Action.TRANSMIT).allowed()).isTrue();
   }
 
@@ -70,8 +65,7 @@ class RadioAccessPolicyTest {
     assertThat(RadioAccessPolicy.evaluate(npc, Action.BUILD_TOWER).reason())
         .isEqualTo(Reason.NPC_DENIED);
     // NPC 听公共台不受限（恒放行）
-    assertThat(RadioAccessPolicy.evaluate(npc, Action.LISTEN).reason())
-        .isEqualTo(Reason.ALLOW);
+    assertThat(RadioAccessPolicy.evaluate(npc, Action.LISTEN).reason()).isEqualTo(Reason.ALLOW);
   }
 
   @Test
@@ -83,7 +77,17 @@ class RadioAccessPolicyTest {
     // TUNE / BUILD_TOWER 权限位单独构造（ctx 辅助方法默认这些位为 true）。
     Context noPrivs =
         new Context(
-            StationScope.PUBLIC, 7, 7, Relation.UNKNOWN, false, false, false, false, false, false, false);
+            StationScope.PUBLIC,
+            7,
+            7,
+            Relation.UNKNOWN,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false);
     assertThat(RadioAccessPolicy.evaluate(noPrivs, Action.TUNE).reason())
         .isEqualTo(Reason.NO_PERMISSION);
     assertThat(RadioAccessPolicy.evaluate(noPrivs, Action.BUILD_TOWER).reason())
@@ -94,11 +98,31 @@ class RadioAccessPolicyTest {
   void roleSquad_requiresSameRoleSubtype() {
     Context sameRole =
         new Context(
-            StationScope.ROLE_SQUAD, 7, 7, Relation.UNKNOWN, true, true, true, true, true, false, true);
+            StationScope.ROLE_SQUAD,
+            7,
+            7,
+            Relation.UNKNOWN,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true);
     assertThat(RadioAccessPolicy.evaluate(sameRole, Action.LISTEN).allowed()).isTrue();
     Context diffRole =
         new Context(
-            StationScope.ROLE_SQUAD, 7, 7, Relation.UNKNOWN, true, true, true, true, true, false, false);
+            StationScope.ROLE_SQUAD,
+            7,
+            7,
+            Relation.UNKNOWN,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false);
     assertThat(RadioAccessPolicy.evaluate(diffRole, Action.LISTEN).reason())
         .isEqualTo(Reason.SCOPE_DENIED);
   }

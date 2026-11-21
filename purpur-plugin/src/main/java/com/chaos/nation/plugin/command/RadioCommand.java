@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 /**
  * /radio 命令（一期骨架）：复述客户端安装提示（带冷却）。
  *
- * <p>未安装 Fabric 客户端时，电台与语音不可用——这里只说明情况并返回 CLIENT_REQUIRED 语义的提示，
- * 不断线、不踢出。真正的调谐/订阅/发射由协议处理器在二期实现。
+ * <p>未安装 Fabric 客户端时，电台与语音不可用——这里只说明情况并返回 CLIENT_REQUIRED 语义的提示， 不断线、不踢出。真正的调谐/订阅/发射由协议处理器在二期实现。
  */
 public final class RadioCommand implements CommandExecutor {
   private final RadioJoinPrompt prompt;

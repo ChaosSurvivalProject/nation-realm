@@ -20,6 +20,19 @@
 - `purpur-plugin`：薄适配层——事件入口、命令、调度、结果应用；DB/AI/压缩/路径在异步线程或独立进程。
 - `fabric-client`：客户端仅可视化与交互，无规则决定权；独立 Loom 构建。
 - `ai-worker`：独立进程，模型只返回意图 JSON，服务端状态机验证后执行。
+- `voice-server`（二期，尚未实现）：独立进程 / 镜像，纯 Java + Opus，UDP 收发、编解码、扇出裁剪、限流、票据验签、无状态多实例。不依赖 Bukkit/Paper/Fabric。
+- `voice-api`（二期，尚未实现）：纯 Java，票据结构与 HMAC 验签、会话与错误码常量，供 purpur-plugin 与 voice-server compileOnly 共享。
+
+## 电台与近场语音（一期控制面已实现，音频栈为二期）
+全部自研，不集成第三方语音模组或托管服务；Opus 仅作 RFC 6716 免版税开放标准编解码器（不算模组）。
+- **控制面 vs 媒体面分离**：控制面走版本化二进制协议（常见 MC 连接），`Radio*` 消息族（0x40-0x47）；音频帧**绝不**进入 common-protocol / MC 连接，媒体面走独立 UDP（二期 voice-server）。
+- **服务端权威**：范围、权限、成本、冷却、偏差校验、位置均以服务端为准；客户端不能决定能听谁/在哪/音量上限。位置取服务端 Player 坐标，客户端上报仅作偏差校验（建议阈值 2 格）；票据短时（建议 30s）、HMAC 用 `NATION_VOICE_SECRET`（与 `NATION_AI_KEY` 分离、可双密钥轮换）。
+- **两套距离严格分开**：电台链路 = 收听者↔发射源（`LinkBudget` 纯函数：标准 FSPL + 不透明区块遮挡 + 环境 + 确定性慢衰落，参数集中且需实测标定）；近场语音 = 说话玩家↔周围玩家（二期客户端音频栈，3D 增益/声像/遮挡/朝向）。不得互相套用公式。
+- **信号四档**：CLEAR → HISSY → BROKEN → MUTED，随距离/遮挡退化；超出设计半径静默。频段整数 kHz 存储、MHz 显示，含 band plan/频道栅格/亚音逻辑隔离；UI 须标注"虚构频段，仅供游戏"。
+- **权限集中**：`RadioAccessPolicy` 单一纯函数，命令与协议处理器共用；PUBLIC 恒放行、FACTION 同国、盟国可听不可发、中立/交战不可听、NPC 永不发射建塔。电台权限位复用现有 `PermissionMatrix.Perm`，不建平行体系。
+- **跨服**：`radio.crossServer.enabled=false` 默认关闭，等阶段 7 多服集成演练；同一频段 proxy 全局仅一个 owner server 发射。3D 覆盖 overlay 可插拔，等阶段 4 收敛，先出 2D 色阶 + 信号强度条；色盲模式覆盖信号配色，不只靠红绿。
+- **无 Mod 玩家**：正常进服，不踢出/不强制下载/不锁入口；进服一次性可点击提示（明确"可选安装、不影响进服"），`/radio` 可复述带冷却。`clientDownloadUrl` 默认空=**待运营补齐**，为空只发文案不编造 URL；无 RADIO 能力位客户端回 `RADIO_CLIENT_REQUIRED` 而非断线。
+- **ai-worker 默认不碰音频**：不接收/转写/录音；可选 `radio.broadcast` 文本播报（三期）须走意图白名单/预算/熔断/`NATION_AI_KEY` 隔离。
 
 ## 线程模型
 - 主线程：事件入口、有限批量结果应用；使用批次 + 截止时间 + 继续游标，避免单次大任务卡服。

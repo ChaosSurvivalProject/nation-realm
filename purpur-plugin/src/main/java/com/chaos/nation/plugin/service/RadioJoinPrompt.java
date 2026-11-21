@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 /**
  * 电台客户端安装提示：进服给一次可点击提示（文本组件 click event 打开下载 URL），/radio 可复述。
  *
- * <p>严格遵守裁决 3：文案显式写明"可选安装、不影响进服"；不踢出、不强制下载、不锁入口； 带冷却防刷屏。未安装客户端时电台与语音不可用（返回 RADIO_CLIENT_REQUIRED），但正常玩法不受影响。
+ * <p>严格遵守裁决 3：文案显式写明"可选安装、不影响进服"；不踢出、不强制下载、不锁入口； 带冷却防刷屏。未安装客户端时电台与语音不可用（返回
+ * RADIO_CLIENT_REQUIRED），但正常玩法不受影响。
  *
  * <p>裁决 4：下载链接无落点时（clientDownloadUrl 为空=待运营补齐），只发文案不发链接， 绝不编造/占位/猜测 URL。
  */
@@ -43,8 +44,7 @@ public final class RadioJoinPrompt {
     Long last = lastPromptMs.get(key);
     if (last != null && now - last < cooldownMs) {
       if (fromCommand) {
-        player.sendMessage(
-            Component.text("电台提示过于频繁，请稍后再试。", NamedTextColor.GRAY));
+        player.sendMessage(Component.text("电台提示过于频繁，请稍后再试。", NamedTextColor.GRAY));
       }
       return;
     }
@@ -58,8 +58,7 @@ public final class RadioJoinPrompt {
         Component.text("[NationRealm 电台] ", NamedTextColor.GOLD)
             .append(
                 Component.text(
-                    "电台与近场语音为可选安装功能，需要 Fabric 客户端；"
-                        + "不安装不影响进服，国家/领土/命令/经济/地图玩法完全不受影响。",
+                    "电台与近场语音为可选安装功能，需要 Fabric 客户端；" + "不安装不影响进服，国家/领土/命令/经济/地图玩法完全不受影响。",
                     NamedTextColor.YELLOW));
 
     String url = settings.clientDownloadUrl() == null ? "" : settings.clientDownloadUrl().trim();
@@ -73,10 +72,7 @@ public final class RadioJoinPrompt {
       // 下载链接待运营补齐：只发文案，明确标注，绝不编造 URL。
       base =
           base.append(Component.newline())
-              .append(
-                  Component.text(
-                      "下载入口待运营补齐，请关注官方公告；本提示不含任何临时链接。",
-                      NamedTextColor.GRAY));
+              .append(Component.text("下载入口待运营补齐，请关注官方公告；本提示不含任何临时链接。", NamedTextColor.GRAY));
     }
     return base;
   }

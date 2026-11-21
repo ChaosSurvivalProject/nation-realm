@@ -24,8 +24,8 @@ public final class PluginConfig {
    * 电台设置（一期骨架）。
    *
    * <ul>
-   *   <li>{@code clientDownloadUrl} 默认空 = <strong>待运营补齐</strong>：必须先建 Releases/资源中心下载项
-   *       再把真实 URL 填进来。严禁编造、占位或猜测 URL；为空时提示骨架只发文案不发链接。
+   *   <li>{@code clientDownloadUrl} 默认空 = <strong>待运营补齐</strong>：必须先建 Releases/资源中心下载项 再把真实 URL
+   *       填进来。严禁编造、占位或猜测 URL；为空时提示骨架只发文案不发链接。
    *   <li>距离/增益/半径为游戏化参数，<strong>需实测标定</strong>，非已验证数字。
    *   <li>{@code crossServerEnabled} 默认 false，等阶段 7 多服集成演练完成才开放。
    * </ul>
