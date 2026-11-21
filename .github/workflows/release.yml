@@ -12,6 +12,10 @@ jobs:
     # 仅正式 tag 触发；fork 上的敏感任务不会运行（无 secrets 且 tag 受保护）。
     if: github.repository == 'ChaosSurvivalProject/nation-realm'
     runs-on: ubuntu-latest
+    # GitHub Actions 禁止在 if 中直接引用 secrets 上下文（会导致工作流校验失败、0 jobs）。
+    # 先提升到 job 级 env，再在步骤 if 中用 env.* 判断。令牌仅来自 secrets，绝不打印。
+    env:
+      HANGAR_TOKEN: ${{ secrets.HANGAR_API_TOKEN }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v6
@@ -38,7 +42,5 @@ jobs:
             发布说明须列出：Minecraft 1.21.1 / Java 21 / Purpur 构建 / Fabric Loader / 协议版本 / 数据库版本 / 破坏性变化 / 迁移步骤。
       # 外部发布（Hangar / Modrinth）只在有 secret 时执行，失败不得泄露令牌。
       - name: Publish to Hangar (optional)
-        if: ${{ secrets.HANGAR_API_TOKEN != '' }}
-        env:
-          HANGAR_TOKEN: ${{ secrets.HANGAR_API_TOKEN }}
+        if: ${{ env.HANGAR_TOKEN != '' }}
         run: echo "Hangar 上传步骤由维护者按 secret 配置；令牌仅来自 secrets，绝不打印。"
