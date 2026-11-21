@@ -14,6 +14,7 @@ import com.chaos.nation.protocol.packets.DataPackets.RegionSnapshot;
 import com.chaos.nation.protocol.packets.DataPackets.SnapshotRequest;
 import com.chaos.nation.protocol.packets.DataPackets.TerritoryDelta;
 import com.chaos.nation.protocol.packets.HandshakePackets;
+import com.chaos.nation.protocol.packets.RadioPackets;
 
 /**
  * 版本化包编解码：公共头 + 消息 ID + 负载 + 扩展块。 帧格式：[varint payloadLen][payload]，payload = [varint
@@ -182,6 +183,45 @@ public final class PacketCodec {
     } else if (packet instanceof Heartbeat q) {
       w.writeLong(q.nonce());
       w.writeLong(q.clientTime());
+    } else if (packet instanceof RadioPackets.Tune q) {
+      w.writeLong(q.stationId());
+      w.writeInt(q.frequencyKhz());
+      w.writeVarInt(q.subToneId());
+      w.writeInt(q.reportedChunkX());
+      w.writeInt(q.reportedChunkZ());
+    } else if (packet instanceof RadioPackets.Subscribe q) {
+      w.writeLong(q.stationId());
+      w.writeLong(q.epoch());
+      w.writeBoolean(q.subscribe());
+    } else if (packet instanceof RadioPackets.SubscribeResult q) {
+      w.writeLong(q.stationId());
+      w.writeLong(q.epoch());
+      w.writeBoolean(q.accepted());
+      w.writeInt(q.errorCode());
+    } else if (packet instanceof RadioPackets.TransmitStart q) {
+      w.writeLong(q.stationId());
+      w.writeString(q.sessionId());
+      w.writeInt(q.reportedChunkX());
+      w.writeInt(q.reportedChunkZ());
+      w.writeLong(q.clientTimeUtc());
+    } else if (packet instanceof RadioPackets.TransmitEnd q) {
+      w.writeString(q.sessionId());
+    } else if (packet instanceof RadioPackets.SignalUpdate q) {
+      w.writeLong(q.transmitterId());
+      w.writeInt(q.listenerChunkX());
+      w.writeInt(q.listenerChunkZ());
+      w.writeVarInt(q.qualityOrdinal());
+      w.writeVarInt(q.snrPermille());
+      w.writeLong(q.version());
+    } else if (packet instanceof RadioPackets.TowerStatus q) {
+      w.writeLong(q.transmitterId());
+      w.writeVarInt(q.statusOrdinal());
+      w.writeLong(q.ownerNationId());
+      w.writeLong(q.revision());
+    } else if (packet instanceof RadioPackets.Jam q) {
+      w.writeLong(q.jammerTransmitterId());
+      w.writeLong(q.victimTransmitterId());
+      w.writeBoolean(q.active());
     } else {
       throw new IllegalArgumentException("unsupported packet: " + packet.getClass());
     }
@@ -286,6 +326,32 @@ public final class PacketCodec {
           new ChunkClaim(h, r.readInt(), r.readInt(), r.readVarInt(), r.readLong(), r.readLong());
       case ERROR -> new DataPackets.ErrorPacket(h, r.readInt(), r.readString());
       case HEARTBEAT -> new DataPackets.Heartbeat(h, r.readLong(), r.readLong());
+      case RADIO_TUNE ->
+          new RadioPackets.Tune(
+              h, r.readLong(), r.readInt(), r.readVarInt(), r.readInt(), r.readInt());
+      case RADIO_SUBSCRIBE ->
+          new RadioPackets.Subscribe(h, r.readLong(), r.readLong(), r.readBoolean());
+      case RADIO_SUBSCRIBE_RESULT ->
+          new RadioPackets.SubscribeResult(
+              h, r.readLong(), r.readLong(), r.readBoolean(), r.readInt());
+      case RADIO_TRANSMIT_START ->
+          new RadioPackets.TransmitStart(
+              h, r.readLong(), r.readString(), r.readInt(), r.readInt(), r.readLong());
+      case RADIO_TRANSMIT_END -> new RadioPackets.TransmitEnd(h, r.readString());
+      case RADIO_SIGNAL_UPDATE ->
+          new RadioPackets.SignalUpdate(
+              h,
+              r.readLong(),
+              r.readInt(),
+              r.readInt(),
+              r.readVarInt(),
+              r.readVarInt(),
+              r.readLong());
+      case RADIO_TOWER_STATUS ->
+          new RadioPackets.TowerStatus(
+              h, r.readLong(), r.readVarInt(), r.readLong(), r.readLong());
+      case RADIO_JAM ->
+          new RadioPackets.Jam(h, r.readLong(), r.readLong(), r.readBoolean());
     };
   }
 }

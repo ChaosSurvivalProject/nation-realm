@@ -23,6 +23,18 @@ public enum ErrorCode {
   QUOTA_EXCEEDED(3006, "配额已满"),
   NAME_RESTRICTED(3007, "该名称对应现实中的国家或地区，为符合相关国家的法律法规，不可注册"),
 
+  // 电台域错误码段（5000-5019）：稳定，不得复用或改变含义。
+  RADIO_FREQUENCY_INVALID(5000, "频率非法或不在规划频段"),
+  RADIO_FREQUENCY_CONFLICT(5001, "频率冲突：同频段已有占用"),
+  RADIO_NOT_AUTHORIZED(5002, "无权使用电台或该收听范围"),
+  RADIO_OUT_OF_RANGE(5003, "超出通信距离"),
+  RADIO_SIGNAL_TOO_WEAK(5004, "信号过弱"),
+  RADIO_BUSY(5005, "频道忙"),
+  RADIO_JAMMED(5006, "频道被干扰"),
+  RADIO_CLIENT_REQUIRED(5007, "电台与语音需要可选客户端；不影响进服，请安装 Fabric 客户端以使用"),
+  RADIO_SESSION_EXPIRED(5008, "发射会话已过期，请重新申请"),
+  RADIO_RATE_LIMITED(5009, "电台请求过于频繁"),
+
   DB_UNAVAILABLE(4001, "数据服务暂不可用"),
   AI_UNAVAILABLE(4002, "AI 服务暂不可用，NPC 使用确定性行为"),
   INTERNAL_ERROR(4999, "内部错误");

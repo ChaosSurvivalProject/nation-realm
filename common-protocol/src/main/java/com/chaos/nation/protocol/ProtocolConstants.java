@@ -11,8 +11,8 @@ public final class ProtocolConstants {
   /** 当前协议主版本：不兼容时拒绝启用高级界面。 */
   public static final int MAJOR_VERSION = 1;
 
-  /** 当前协议次版本：小版本采用未知字段跳过与默认值兼容。 */
-  public static final int MINOR_VERSION = 0;
+  /** 当前协议次版本：小版本采用未知字段跳过与默认值兼容。0.1 新增电台控制面消息族。 */
+  public static final int MINOR_VERSION = 1;
 
   /** 默认增量刷新周期（毫秒）。 */
   public static final int REFRESH_INTERVAL_MS = 60_000;
