@@ -1,8 +1,20 @@
 # NationRealm（国家领土系统）
 
+<p align="center">
+  <img src="assets/images/banner.png" alt="nation-realm 宣传图" width="820">
+</p>
+
+
 基于 **Purpur 1.21.1（Java 21）** 的大型国家、领土、政府、经济、军事、外交、NPC 与可视化地图系统。
 
 > 服务端权威：所有国家规则、权限、成本、冷却与范围都由服务端验证；客户端只是可选的高精细地图增强，安装与否都能进服。
+
+## 效果预览
+
+<p align="center">
+  <img src="assets/images/demo.png" alt="nation-realm 演示图" width="720">
+</p>
+
 
 ## 架构总览
 
