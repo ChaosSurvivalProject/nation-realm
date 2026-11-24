@@ -21,7 +21,7 @@ dependencies {
     implementation(files("../common-protocol/build/libs/common-protocol-0.1.0-SNAPSHOT.jar"))
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
-    testImplementation("org.assertj:assertj-core:3.26.3")
+    testImplementation("org.assertj:assertj-core:3.27.7")
 }
 
 tasks.withType<Test>().configureEach { useJUnitPlatform() }
